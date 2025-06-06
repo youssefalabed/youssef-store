@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Yousef Alabd Store</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #f5f5f5; }
+    .product { background: white; padding: 15px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    img { width: 200px; height: auto; border-radius: 8px; }
+    .cart { position: fixed; top: 20px; right: 20px; background: #fff; padding: 15px; border: 1px solid #ccc; border-radius: 10px; width: 250px; }
+    button { padding: 5px 10px; background: #28a745; color: white; border: none; cursor: pointer; border-radius: 5px; margin-top: 10px; }
+    button:hover { background: #218838; }
+    .remove-btn { background: #dc3545; margin-left: 10px; }
+    h1, h2 { color: #333; }
+    ul { padding-left: 20px; }
+    select { padding: 5px; margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+
+  <select onchange="changeLanguage(this.value)">
+    <option value="en">English</option>
+    <option value="ar">العربية</option>
+    <option value="de">Deutsch</option>
+    <option value="es">Español</option>
+  </select>
+
+  <h1 id="store-title">Welcome to Yousef Alabd Store</h1>
+
+  <div class="cart">
+    <h2 id="cart-title">🛒 Your Cart</h3>
+    <ul id="cart-items"></ul>
+    <p><strong id="total-label">Total Items:</strong> <span id="cart-count">0</span></p>
+  </div>
+
+  <div class="product">
+    <h2 class="title" data-key="tshirt">Football T-Shirt</h2>
+    <img src="tshirt.jpg" alt="Football T-Shirt">
+    <p><span data-key="price">Price</span>: $15</p>
+    <button onclick="addToCart('Football T-Shirt')">Add to Cart</button>
+  </div>
+
+  <div class="product">
+    <h3 class="title" data-key="football">Football</h2>
+    <img src="football.jpg" alt="Football">
+    <p><span data-key="price">Price</span>: $20</p>
+    <button onclick="addToCart('Football')">Add to Cart</button>
+  </div>
+
+  <div class="product">
+    <h4 class="title" data-key="football">fotball</h4>
+	<img src="gripsocks.jpg" alt="grip">
+	<p><span data-key="price">price</span>: $10</p>
+	<button onclick="addToCart('gripsocks')">Add to cart</button>
+  </div>
+
+  <script>
+    let cartItems = [];
+    const cartList = document.getElementById("cart-items");
+    const cartCount = document.getElementById("cart-count");
+
+    function addToCart(product) {
+      cartItems.push(product);
+      renderCart();
+    }
+
+    function removeFromCart(index) {
+      cartItems.splice(index, 1);
+      renderCart();
+    }
+
+    function renderCart() {
+      cartList.innerHTML = "";
+      cartItems.forEach((item, index) => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        const removeBtn = document.createElement("button");
+        removeBtn.textContent = "X";
+        removeBtn.className = "remove-btn";
+        removeBtn.onclick = () => removeFromCart(index);
+        li.appendChild(removeBtn);
+        cartList.appendChild(li);
+      });
+      cartCount.textContent = cartItems.length;
+    }
+
+    const translations = {
+      en: {
+        "store-title": "Welcome to Yousef Alabd Store",
+        "cart-title": "🛒 Your Cart",
+        "total-label": "Total Items:",
+        "price": "Price"
+      },
+      ar: {
+        "store-title": "مرحبا بكم في متجر يوسف العبد",
+        "cart-title": "🛒 سلتك",
+        "total-label": "عدد العناصر:",
+        "price": "السعر"
+      },
+      de: {
+        "store-title": "Willkommen im Yousef Alabd Store",
+        "cart-title": "🛒 Dein Warenkorb",
+        "total-label": "Gesamtanzahl:",
+        "price": "Preis"
+      },
+      es: {
+        "store-title": "Bienvenido a la tienda de Yousef Alabd",
+        "cart-title": "🛒 Tu carrito",
+        "total-label": "Total de artículos:",
+        "price": "Precio"
+      }
+    };
+
+    function changeLanguage(lang) {
+      const text = translations[lang];
+      for (const key in text) {
+        const element = document.getElementById(key);
+        if (element) element.textContent = text[key];
+      }
+
+      document.querySelectorAll("[data-key='price']").forEach(el => {
+        el.textContent = text["price"];
+      });
+    }
+  </script>
+
+</body>
+</html>
+
